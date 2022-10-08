@@ -132,6 +132,8 @@ function handleParticles(params) {
         if(dist<100){
             // then we'll draw a line from i to j
             ctx.beginPath()
+            ctx.strokeStyle=particleArray[i].color
+            ctx.lineWidth=0.2
             ctx.moveTo(particleArray[i].x,particleArray[i].y) // begin here
             ctx.lineTo(particleArray[j].x,particleArray[j].y) // reach here
             ctx.stroke()
