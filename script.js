@@ -43,7 +43,7 @@ window.addEventListener("resize", () => {
 
 // mouse interactivity
 const particleArray = [];
-let hue=0
+let hue = 0;
 const mouse = {
   x: undefined,
   y: undefined,
@@ -51,7 +51,7 @@ const mouse = {
 canvas.addEventListener("click", (event) => {
   mouse.x = event.x;
   mouse.y = event.y;
-  for(let i=0;i<10;i++) particleArray.push(new Particle())
+  for (let i = 0; i < 10; i++) particleArray.push(new Particle());
   // console.log(event);
   //console.log(mouse.x,mouse.y);
   // drawCircle()
@@ -59,7 +59,7 @@ canvas.addEventListener("click", (event) => {
 canvas.addEventListener("mousemove", (event) => {
   mouse.x = event.x;
   mouse.y = event.y;
-  for(let i=0;i<5;i++) particleArray.push(new Particle())
+  for (let i = 0; i < 5; i++) particleArray.push(new Particle());
   // console.log(mouse.x,mouse.y);
   // drawCircle()
 });
@@ -86,7 +86,7 @@ class Particle {
     //speed
     this.speedX = Math.random() * 3 - 1.5; // ran no. btw +1.5 to -1.5
     this.speedY = Math.random() * 3 - 1.5;
-    this.color='hsl('+hue+',100%, 50%)'
+    this.color = "hsl(" + hue + ",100%, 50%)";
   }
   // updates x and y
   update() {
@@ -123,21 +123,35 @@ function handleParticles(params) {
     particleArray[i].draw();
     // when we are shrinking the size , its less than 0 then draw will hang
     // so we remove when they are less than on a certain val
-    if (particleArray[i].size <= 0.3) {
-      particleArray.splice(i, 1);
-      i--;
-      console.log(particleArray);
+    
+    for(let j=i;j<particleArray.length;j++){
+        // using py thm
+        const dx=particleArray[i].x-particleArray[j].x
+        const dy=particleArray[i].y-particleArray[j].y
+        const dist=Math.sqrt(dx*dx+dy*dy)
+        if(dist<100){
+            // then we'll draw a line from i to j
+            ctx.beginPath()
+            ctx.moveTo(particleArray[i].x,particleArray[i].y) // begin here
+            ctx.lineTo(particleArray[j].x,particleArray[j].y) // reach here
+            ctx.stroke()
+        }
     }
+    if (particleArray[i].size <= 0.3) {
+        particleArray.splice(i, 1);
+        i--;
+        console.log(particleArray);
+      }
   }
 }
 
 let c = 0;
 // animate mouse control
 function animate() {
-    ctx.fillStyle='rgba(0,0,0,0.01)';
-    ctx.fillRect(0,0,canvas.width,canvas.height)
-//   ctx.clearRect(0, 0, canvas.width, canvas.height);
-    hue+=0.5
+  // ctx.fillStyle='rgba(0,0,0,0.01)';
+  // ctx.fillRect(0,0,canvas.width,canvas.height)
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hue += 2;
   // drawCircle()
   handleParticles();
   let id = requestAnimationFrame(animate);
