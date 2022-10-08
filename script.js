@@ -43,6 +43,7 @@ window.addEventListener("resize", () => {
 
 // mouse interactivity
 const particleArray = [];
+let hue=0
 const mouse = {
   x: undefined,
   y: undefined,
@@ -50,7 +51,7 @@ const mouse = {
 canvas.addEventListener("click", (event) => {
   mouse.x = event.x;
   mouse.y = event.y;
-  // particleArray.push(new Particle())
+  for(let i=0;i<10;i++) particleArray.push(new Particle())
   // console.log(event);
   //console.log(mouse.x,mouse.y);
   // drawCircle()
@@ -58,7 +59,7 @@ canvas.addEventListener("click", (event) => {
 canvas.addEventListener("mousemove", (event) => {
   mouse.x = event.x;
   mouse.y = event.y;
-  particleArray.push(new Particle());
+  for(let i=0;i<5;i++) particleArray.push(new Particle())
   // console.log(mouse.x,mouse.y);
   // drawCircle()
 });
@@ -85,6 +86,7 @@ class Particle {
     //speed
     this.speedX = Math.random() * 3 - 1.5; // ran no. btw +1.5 to -1.5
     this.speedY = Math.random() * 3 - 1.5;
+    this.color='hsl('+hue+',100%, 50%)'
   }
   // updates x and y
   update() {
@@ -99,7 +101,7 @@ class Particle {
   draw() {
     // draws particles
     ctx.beginPath();
-    ctx.fillStyle = "white";
+    ctx.fillStyle = this.color;
     ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
     ctx.fill();
   }
@@ -132,7 +134,10 @@ function handleParticles(params) {
 let c = 0;
 // animate mouse control
 function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle='rgba(0,0,0,0.01)';
+    ctx.fillRect(0,0,canvas.width,canvas.height)
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+    hue+=0.5
   // drawCircle()
   handleParticles();
   let id = requestAnimationFrame(animate);
